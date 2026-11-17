@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seal-PDF 真透明底手写签字提取 &amp; 电子印章骑缝盖章离线工具（零上传隐私版）</title>
+  <meta name="description" content="100% 纯本地离线运行：手机暗光实拍白纸签名一键抠成真 Alpha 透明底 PNG，支持 Apple Pencil 压感手写、合规圆/椭圆/法人方章排版、多页合同拖拽盖章与骑缝章 N 等分切分导出 PDF。拒绝周卡 ¥28，¥15 永久买断。">
+  <link rel="canonical" href="https://a3152557994-ship-it.github.io/seal-pdf/">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" type="image/png" href="./icons/icon-192.png">
+  <link rel="apple-touch-icon" href="./icons/icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="透明签章">
+  <meta name="theme-color" content="#b91c1c">
+  <link rel="stylesheet" href="./style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Seal-PDF Offline True-Alpha Signature & Perforation Stamp",
+    "operatingSystem": "iOS, iPadOS, macOS, Windows, Android",
+    "applicationCategory": "BusinessApplication",
+    "description": "100% client-side offline camera signature shadow-removal into true Alpha PNG, pressure-sensitive signature pad, compliant test seal generator, and multi-page contract perforation stamp PDF exporter.",
+    "offers": {
+      "@type": "Offer",
+      "price": "15.00",
+      "priceCurrency": "CNY"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div class="compliance-banner">
+    ⚖️ <strong>合规与隐私声明</strong>：本工具 100% 在您本地浏览器离线运行（断网可用、合同与签字零字节上传服务器）。印章排版功能<strong>仅限经合法授权的自身主体测试、内部业务审批流转或个人手写签章使用，严禁伪造、变造任何他人或未经授权机构的印章</strong>。
+  </div>
+
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand">
+        <img src="./icons/icon-192.png" width="34" height="34" alt="Seal-PDF Icon" class="brand-logo">
+        <div>
+          <span class="brand-title">Seal-PDF 真透明签章工作台</span>
+          <span class="brand-sub">iOS / macOS 离线 PWA · 暗光去灰底真 Alpha · 多页骑缝章自动切分</span>
+        </div>
+      </div>
+      <div class="top-actions">
+        <a href="#contractStudio" class="btn-secondary btn-sm">合同骑缝盖章台</a>
+        <a href="#proUnlock" class="pro-tag">Pro ¥15 永久买断（告别 ¥28/周）</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <span class="pill">直击痛点：拒绝「假透明白底遮挡合同文字」· 拒绝「周卡 ¥28 自动续费刺客」</span>
+      <h1>暗光拍白纸签字秒变 100% 纯透明底，<br>一页不传云端，离线搞定合同签字与多页骑缝章</h1>
+      <p class="hero-sub">支持 Safari「添加到主屏幕」永久离线使用。透明签名抠图、压感手写与画布盖章预览全免费；高分无水印骑缝章切分与多页 PDF 导出仅 ¥15 一次买断。</p>
+    </section>
+
+    <section class="studio-grid">
+      <!-- PANEL 1: CAMERA SIGNATURE SHADOW REMOVAL + PAD -->
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <span class="step-num">STEP 1 · 免费无限用</span>
+            <h2>真 Alpha 透明底手写签名提取 / 压感手写板</h2>
+          </div>
+          <div class="tab-switch">
+            <button type="button" id="tabPhotoBtn" class="active">📷 实拍去阴影灰底</button>
+            <button type="button" id="tabPadBtn">✍️ 压感平滑手写板</button>
+          </div>
+        </div>
+
+        <!-- Photo Extraction Mode -->
+        <div id="photoModeBox">
+          <div class="toolbar-row">
+            <label class="btn-primary btn-sm file-btn">
+              📂 选择实拍白纸签字照片
+              <input id="sigPhotoInput" type="file" accept="image/*" hidden>
+            </label>
+            <button id="loadShadowDemoBtn" class="btn-secondary btn-sm" type="button">✨ 加载「暗光灰影白纸签字」演示图</button>
+          </div>
+
+          <div class="controls-row">
+            <div>
+              <label for="inkColorSelect">墨水增强色</label>
+              <select id="inkColorSelect">
+                <option value="black">纯黑碳素 (#111827)</option>
+                <option value="blue">档案宝蓝 (#0F3D91)</option>
+                <option value="red">朱砂红墨 (#C81E1E)</option>
+                <option value="original">保留原笔迹色彩</option>
+              </select>
+            </div>
+            <div>
+              <label for="shadowThresholdRange">去纸张灰底强度：<span id="thresholdVal">20</span></label>
+              <input id="shadowThresholdRange" type="range" min="8" max="42" value="20">
+            </div>
+          </div>
+
+          <div class="compare-grid">
+            <div class="canvas-card">
+              <span class="canvas-label">原图（含不均匀暗角灰影）</span>
+              <canvas id="rawSigCanvas" width="380" height="170"></canvas>
+            </div>
+            <div class="canvas-card checker-bg">
+              <span class="canvas-label">真 Alpha 透明通道结果（棋盘格代表 Alpha=0）</span>
+              <canvas id="cleanSigCanvas" width="380" height="170"></canvas>
+            </div>
+          </div>
+          <p id="sigStatsText" class="hint-text"></p>
+        </div>
+
+        <!-- Trackpad / Apple Pencil Mode -->
+        <div id="padModeBox" hidden>
+          <div class="toolbar-row">
+            <span class="hint-text">支持 Apple Pencil 压感、Mac 触控板与手指顺滑书写（自动贝塞尔平滑）：</span>
+            <button id="clearPadBtn" class="btn-ghost btn-sm" type="button">清空重写</button>
+          </div>
+          <div class="canvas-card checker-bg">
+            <canvas id="padCanvas" width="520" height="190"></canvas>
+          </div>
+        </div>
+
+        <div class="panel-footer">
+          <button id="downloadSigPngBtn" class="btn-secondary" type="button">⬇️ 免费下载真透明签名 PNG</button>
+          <button id="sendSigToContractBtn" class="btn-primary" type="button">📌 贴入下方合同画布 →</button>
+        </div>
+      </div>
+
+      <!-- PANEL 2: COMPLIANT SEAL LAYOUT DESIGNER -->
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <span class="step-num">STEP 2 · 合规内部测试/流转排版</span>
+            <h2>圆形 / 椭圆形 / 法人方章真透明排版器</h2>
+          </div>
+        </div>
+
+        <div class="seal-form-grid">
+          <div>
+            <label for="sealShape">印章样式</label>
+            <select id="sealShape">
+              <option value="circular">圆形公章样式（五角星 + 环形弧排）</option>
+              <option value="oval">椭圆形财务/专用章样式</option>
+              <option value="square">传统法人姓名方章（右起竖排之印）</option>
+            </select>
+          </div>
+          <div>
+            <label for="sealMainText">主体名称（限合法授权自身主体）</label>
+            <input id="sealMainText" type="text" value="星辰数字工作室内部测试">
+          </div>
+          <div>
+            <label for="sealSubText">横向副文 / 用途说明</label>
+            <input id="sealSubText" type="text" value="内部测试章">
+          </div>
+          <div>
+            <label for="sealCodeText">底部防伪数字 / 信用编码</label>
+            <input id="sealCodeText" type="text" value="91310000TEST8801">
+          </div>
+          <div>
+            <label for="sealNoiseRange">逼真印泥海绵纹理：<span id="noiseVal">24%</span></label>
+            <input id="sealNoiseRange" type="range" min="0" max="60" value="24">
+          </div>
+          <div>
+            <label for="sealAngleRange">自然盖章倾角：<span id="angleVal">-6°</span></label>
+            <input id="sealAngleRange" type="range" min="-25" max="25" value="-6">
+          </div>
+        </div>
+
+        <div class="seal-preview-wrap checker-bg">
+          <canvas id="sealPreviewCanvas" width="260" height="260"></canvas>
+        </div>
+        <p class="compliance-micro">⚠️ 严正提示：仅限经合法授权的自身主体测试或内部审批流转使用，严禁伪造他人印章。</p>
+
+        <div class="panel-footer">
+          <button id="applySealOnPageBtn" class="btn-secondary" type="button">📍 盖在当前合同页</button>
+          <button id="applyPerforationBtn" class="btn-primary" type="button">✂️ 一键生成多页骑缝章 →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 3: MULTI-PAGE CONTRACT STAMP + PERFORATION SEAL SLICER -->
+    <section id="contractStudio" class="panel full-panel">
+      <div class="panel-head">
+        <div>
+          <span class="step-num">STEP 3 · 合同拖拽签章 &amp; N 等分骑缝章切分台</span>
+          <h2>多页合同画布预览（支持拖拽移动签字与主章 + 右侧边缘自动骑缝切片）</h2>
+        </div>
+        <div class="toolbar-row">
+          <label class="btn-secondary btn-sm file-btn">
+            📄 导入合同图片（可多选多页）
+            <input id="contractFilesInput" type="file" accept="image/*" multiple hidden>
+          </label>
+          <button id="resetSampleContractBtn" class="btn-ghost btn-sm" type="button">加载 3 页仿真技术服务合同</button>
+        </div>
+      </div>
+
+      <div class="perforation-bar">
+        <label class="checkbox-inline">
+          <input id="enablePerforationToggle" type="checkbox" checked>
+          <strong>启用多页骑缝章自动等分切片（将印章按总页数精准等分为 N 份贴合每页右边缘）</strong>
+        </label>
+        <div class="perf-slider">
+          <label for="perfVerticalRange">骑缝垂直位置：</label>
+          <input id="perfVerticalRange" type="range" min="15" max="85" value="52">
+        </div>
+      </div>
+
+      <div id="sliceStripPreview" class="slice-strip"></div>
+
+      <div class="contract-workspace">
+        <div class="page-tabs" id="contractPageTabs"></div>
+        <div class="contract-canvas-stage">
+          <canvas id="contractStageCanvas" width="760" height="1075"></canvas>
+        </div>
+        <p class="hint-text center">💡 提示：直接在上方合同画布中按住鼠标或手指，即可自由拖动「手写签字」或「完整印章」到落款处！</p>
+      </div>
+
+      <div class="export-bar">
+        <button id="exportSinglePreviewBtn" class="btn-secondary" type="button">⬇️ 免费导出当前单页预览图 (PNG)</button>
+        <button id="exportProPdfBtn" class="btn-primary btn-lg" type="button">🔒 导出无水印全套骑缝合同多页 PDF (Pro ¥15)</button>
+        <button id="exportProPngZipBtn" class="btn-dark" type="button">🔒 批量导出各页高清无损 PNG (Pro)</button>
+      </div>
+    </section>
+
+    <!-- STEP 4: PRO UNLOCK -->
+    <section id="proUnlock" class="pro-box">
+      <div class="pro-cols">
+        <div>
+          <span class="step-num">ONE-TIME BUYOUT · 永久买断不订阅</span>
+          <h2>解锁 Seal-PDF Pro：<span class="red-price">¥15 永久买断</span></h2>
+          <p class="muted-p">App Store 同类电子签章动辄「免费试用 3 天转 ¥28/周（一年 ¥1456）」且导出还是白底遮字。我们坚持纯离线隐私计算 + ¥15 一次性永久买断：</p>
+          <ul class="pro-list">
+            <li>✅ <strong>高清无水印多页骑缝章自动 N 等分切分</strong>（2 页–30 页合同精准像素级对齐）</li>
+            <li>✅ <strong>一键离线合成多页标准 A4 签章合同 PDF</strong>（内置纯本地 PDF 1.4 引擎，不经过任何服务器）</li>
+            <li>✅ <strong>批量导出全套 300DPI 无损合同 PNG + 自定义朱砂印泥纹理</strong></li>
+            <li>✅ <strong>iPhone / iPad / Mac 多端通用同一枚 <code>OPC1.</code> 离线激活码</strong></li>
+          </ul>
+          <div class="contact-card">
+            <p>📬 下单获取激活码（注明 <strong><code>seal-pdf</code></strong>，¥15 永久买断）：</p>
+            <div class="chips">
+              <a href="mailto:3152557994@qq.com?subject=Purchase%20seal-pdf%20Pro%20(%C2%A515)&body=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E6%83%B3%E8%B4%AD%E4%B9%B0%20seal-pdf%20Pro%20%E6%B0%B8%E4%B9%85%E6%BF%80%E6%B4%BB%E7%A0%81%EF%BC%88%C2%A515%E4%B9%B0%E6%96%AD%EF%BC%89%E3%80%82">📧 3152557994@qq.com</a>
+              <a href="mailto:a3152557994@gmail.com?subject=Purchase%20seal-pdf%20Pro%20(%C2%A515)&body=Hello%2C%20I%20would%20like%20to%20buy%20a%20seal-pdf%20Pro%20lifetime%20license%20(%C2%A515).">📧 a3152557994@gmail.com</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="activate-card">
+          <div class="status-line">
+            <span id="licenseDot" class="dot"></span>
+            <strong id="licenseTitle">当前版本：免费版（透明抠图免费 · 骑缝无水印 PDF 需激活）</strong>
+          </div>
+          <label for="opcTokenInput">输入 OPC1. 激活码（本地 Ed25519 公钥验签）</label>
+          <div class="token-row">
+            <input id="opcTokenInput" type="text" placeholder="OPC1.eyJ2IjoxLCJwIjoic2VhbC1wZGYi..." autocomplete="off">
+            <button id="activateBtn" class="btn-primary" type="button">立即激活</button>
+          </div>
+          <p id="activateMsg" class="hint-text">离线公钥：MCowBQYDK2VwAyEAP5NCVP7C...SXys=</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>Seal-PDF 真透明签章 · 100% 本地浏览器离线运行 · 仅限合法授权主体自身测试与内部业务流转使用，严禁伪造他人印章。</p>
+      <p>联系邮箱：<a href="mailto:3152557994@qq.com">3152557994@qq.com</a> / <a href="mailto:a3152557994@gmail.com">a3152557994@gmail.com</a> · <a href="./llms.txt">llms.txt</a></p>
+    </div>
+  </footer>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

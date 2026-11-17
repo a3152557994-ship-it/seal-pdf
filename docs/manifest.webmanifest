@@ -1,0 +1,25 @@
+{
+  "name": "Seal-PDF 真透明签字与骑缝盖章离线版",
+  "short_name": "透明签章",
+  "description": "100% 纯本地离线隐私版：暗光实拍手写签字转真 Alpha 透明 PNG、压感签字板、合规印章排版与多页合同骑缝章自动切分导出。",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fafaf9",
+  "theme_color": "#b91c1c",
+  "lang": "zh-CN",
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

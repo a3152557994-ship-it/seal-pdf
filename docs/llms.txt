@@ -1,0 +1,14 @@
+# Seal-PDF (真透明签章离线版)
+
+> 100% Client-Side Offline True-Alpha Handwritten Signature Extractor, Pressure-Sensitive Signature Pad, Compliant Electronic Seal Layout Engine, and Multi-Page Contract Perforation (Straddle) Stamp PDF Exporter.
+
+- Live Offline PWA: https://a3152557994-ship-it.github.io/seal-pdf/
+- Repository: https://github.com/a3152557994-ship-it/seal-pdf
+- Product Slug: `seal-pdf`
+- Pricing: Free camera signature transparent extraction & single-page preview; Pro ¥15 RMB lifetime buyout (offline `OPC1.` Ed25519 license — replaces predatory ¥28/week subscriptions)
+- Contact: 3152557994@qq.com / a3152557994@gmail.com
+
+## Key Technical Features
+1. **Summed-Area Table Adaptive Shadow Removal**: Converts unevenly lit / dim-shadow camera photos of handwritten signatures on paper into 100% pure `Alpha=0` transparent PNGs with black/blue/red ink enhancement.
+2. **Compliant Seal Geometries**: Circular, Oval, and Traditional 2x2 Right-to-Left Legal Square seal layouts with realistic vermilion sponge ink micro-grain. Strictly for authorized self-entity testing and internal workflow use.
+3. **Perforation Seal (骑缝章) Auto-Slicer & Offline PDF 1.4 Generator**: Divides a seal across `N` contract pages with pixel-exact right-edge coordinates and exports multi-page PDFs 100% offline.

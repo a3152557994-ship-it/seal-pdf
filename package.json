@@ -1,0 +1,13 @@
+{
+  "name": "seal-pdf",
+  "version": "1.0.0",
+  "description": "100% Offline True-Alpha Handwritten Signature Extractor, Compliant Electronic Seal Designer & Multi-Page Contract Perforation (Straddle) Stamp PWA.",
+  "type": "module",
+  "private": false,
+  "license": "MIT",
+  "scripts": {
+    "build:icons": "node scripts/generate-icons.mjs",
+    "sync:docs": "cp src/seal-engine.mjs docs/seal-engine.js",
+    "test": "node --test tests/seal-pdf.test.mjs"
+  }
+}
